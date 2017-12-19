@@ -1,12 +1,12 @@
 <?php
 /**
  * Plugin Name: Woo Additional Admin Fee Percentage
+ * Plugin URI: https://github.com/SkyPressATX/woo-additional-admin-fee
  * Description: Add an additional administration fee to your cart
  * Version: 1.0.0
  * Author: SkyPress LLC
  * Author URI: https://skypress.io
  * Text Domain: woocommerce-extension
- * Domain Path: /languages
  *
  * WC requires at least: 3.2
  * WC tested up to: 3.2
