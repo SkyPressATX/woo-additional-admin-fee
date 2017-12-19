@@ -18,5 +18,5 @@ Some products take a bit more work to prepare and or ship. This plugin will allo
 
 
 == Screenshots ==
-1. https://i.imgur.com/Bh8GXa9.png
-2. https://i.imgur.com/ANsgUcC.png
+1. http://pix.toile-libre.org/upload/original/1513659200.jpg
+2. http://pix.toile-libre.org/upload/original/1513662406.jpg

@@ -59,7 +59,7 @@ class Additional_Admin_Fee {
    * @since 1.0.0
    * @var array $additional_admin_fee Empty to begin with, will be populated when cart total is calculated.
    **/
-  private $additional_admin_fees = [];
+  private $additional_admin_fees;
 
 
   /**
@@ -120,7 +120,7 @@ class Additional_Admin_Fee {
    * @return boolean If checks do not pass, return false to exit this method.
    **/
   public function save_to_product_meta( $post_id ) {
-    if ( ! ( isset( $_POST['woocommerce_meta_nonce'], $_POST[ $this->additional_admin_fee_slug ] ) ) ) {
+    if ( ! ( isset( $_POST['woocommerce_meta_nonce'] ) ) ) {
       return false;
     }
 
@@ -128,16 +128,24 @@ class Additional_Admin_Fee {
       return false;
     }
 
-    $fee_value = sanitize_text_field(
-      wp_unslash( $_POST[ $this->additional_admin_fee_slug ] )
-    );
+    //If there is no fee value, then delete the post meta
+    if( ! isset( $_POST[ $this->additional_admin_fee_slug ] ) || empty( $_POST[ $this->additional_admin_fee_slug ] ) ) {
+      delete_post_meta(
+        $post_id,
+        $this->additional_admin_fee_slug
+      );
 
+      return true;
+    }
+
+    $fee_value = sanitize_text_field( $_POST[ $this->additional_admin_fee_slug ] );
     if( ! is_numeric( $fee_value ) ) return false;
 
+    // Update the post meta if we have a fee value
     update_post_meta(
       $post_id,
       $this->additional_admin_fee_slug,
-      esc_attr( $fee_value )
+      (integer)$fee_value
     );
 
   }
@@ -156,7 +164,9 @@ class Additional_Admin_Fee {
     }
 
     global $woocommerce;
-
+    $fee_total = 0; // Clear before calculating
+    $this->additional_admin_fees = [];
+    
     array_walk( $woocommerce->cart->cart_contents, function( &$product ) {
       $this->additional_admin_fees[] = $this->check_product_for_additional_fee( $product['product_id'] );
     } );
